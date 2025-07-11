@@ -1,0 +1,61 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16
+    container_name: postgres1
+    ports:
+      - "5088:5432"
+    environment:
+      POSTGRES_DB: new_employee_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin123
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - helpdesk-net
+    restart: always
+
+  backend:
+    build: ./Backend
+    container_name: Backend1
+    ports:
+      - "3088:3088"
+    depends_on:
+      - postgres
+    env_file:
+      - ./Backend/server.env
+    networks:
+      - helpdesk-net
+    restart: always
+
+  frontend:
+    build: ./Frontend
+    container_name: Frontend1
+    ports:
+      - "8145:80"
+    depends_on:
+      - backend
+    networks:
+      - helpdesk-net
+    restart: always
+
+  hr_page:
+    build: ./Hr_page
+    container_name: Hr_page1
+    ports:
+      - "8146:80"
+    depends_on:
+      - backend
+    networks:
+      - helpdesk-net
+    restart: always
+
+volumes:
+  pgdata:
+
+networks:
+  helpdesk-net:
+    driver: bridge
+
