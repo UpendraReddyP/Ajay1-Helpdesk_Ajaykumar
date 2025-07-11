@@ -4,7 +4,7 @@ const cors = require('cors');
 const { Pool } = require('pg');
 
 const app = express();
-const port = process.env.PORT || 3426;
+const port = process.env.PORT || 3088;
 
 // PostgreSQL connection with retry logic
 const createPool = () => {
