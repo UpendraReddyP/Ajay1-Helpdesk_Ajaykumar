@@ -185,49 +185,18 @@
             width: 100%;
             border-collapse: collapse;
             margin-top: 1rem;
-            table-layout: fixed; /* Ensure consistent column widths */
         }
 
         .tickets-table th, .tickets-table td {
             padding: 1rem;
             text-align: left;
             border-bottom: 1px solid #eee;
-            vertical-align: middle; /* Align content vertically in the middle */
         }
 
         .tickets-table th {
             background: rgba(67, 97, 238, 0.05);
             font-weight: 600;
             color: var(--primary);
-            text-align: center; /* Center-align headers */
-        }
-
-        .tickets-table td {
-            text-align: center; /* Center-align data cells */
-        }
-
-        .tickets-table th:first-child, .tickets-table td:first-child {
-            width: 10%; /* Fixed width for Ticket ID column */
-        }
-
-        .tickets-table th:nth-child(2), .tickets-table td:nth-child(2) {
-            width: 15%; /* Fixed width for Employee column */
-        }
-
-        .tickets-table th:nth-child(5), .tickets-table td:nth-child(5) {
-            width: 10%; /* Fixed width for Priority column */
-        }
-
-        .tickets-table th:nth-child(6), .tickets-table td:nth-child(6) {
-            width: 10%; /* Fixed width for Status column */
-        }
-
-        .tickets-table th:nth-child(7), .tickets-table td:nth-child(7) {
-            width: 15%; /* Fixed width for Created column */
-        }
-
-        .tickets-table th:last-child, .tickets-table td:last-child {
-            width: 15%; /* Fixed width for Actions column */
         }
 
         .tickets-table tr:hover {
@@ -280,9 +249,6 @@
             font-size: 1rem;
             margin: 0 0.25rem;
             transition: transform 0.2s ease;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
         }
 
         .action-btn:hover {
@@ -670,7 +636,7 @@
                 if (departmentFilter) params.append('department', departmentFilter);
                 if (issueTypeFilter) params.append('issue_type', issueTypeFilter);
                 
-                const response = await fetch(`http://51.20.55.179:3088/api/tickets?${params.toString()}`);
+                const response = await fetch(`http://localhost:5000/api/tickets?${params.toString()}`);
                 if (!response.ok) throw new Error('Failed to fetch tickets');
                 
                 const tickets = await response.json();
@@ -741,7 +707,7 @@
         // View ticket details
         async function viewTicket(ticketId) {
             try {
-                const response = await fetch(`http://51.20.55.179:3088/api/tickets/${ticketId}`);
+                const response = await fetch(`http://localhost:5000/api/tickets/${ticketId}`);
                 if (!response.ok) throw new Error('Failed to fetch ticket');
                 
                 const ticket = await response.json();
@@ -779,7 +745,7 @@
         async function resolveTicket(ticketId) {
             if (confirm('Mark this ticket as resolved?')) {
                 try {
-                    const response = await fetch(`http://51.20.55.179:3088/api/tickets/${ticketId}/status`, {
+                    const response = await fetch(`http://localhost:5000/api/tickets/${ticketId}/status`, {
                         method: 'PUT',
                         headers: {
                             'Content-Type': 'application/json'
@@ -802,7 +768,7 @@
         async function closeTicket(ticketId) {
             if (confirm('Close this ticket?')) {
                 try {
-                    const response = await fetch(`http://51.20.55.179:3088/api/tickets/${ticketId}/status`, {
+                    const response = await fetch(`http://localhost:5000/api/tickets/${ticketId}/status`, {
                         method: 'PUT',
                         headers: {
                             'Content-Type': 'application/json'
@@ -826,7 +792,7 @@
             if (!currentTicketId) return;
             
             try {
-                const response = await fetch(`http://51.20.55.179:3088/api/tickets/${currentTicketId}/status`, {
+                const response = await fetch(`http://localhost:5000/api/tickets/${currentTicketId}/status`, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json'
@@ -853,7 +819,7 @@
             if (!comment) return;
             
             try {
-                const response = await fetch(`http://51.20.55.179:3088/api/tickets/${currentTicketId}/comments`, {
+                const response = await fetch(`http://localhost:5000/api/tickets/${currentTicketId}/comments`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
